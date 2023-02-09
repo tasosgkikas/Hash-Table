@@ -1,0 +1,21 @@
+{
+    "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "${fileDirname}",
+            "binaryPath": "${workspaceFolder}\\main.exe",
+            "binaryArgs": []
+        }
+    ],
+    "files.associations": {
+        "assert.h": "c",
+        "*.tcc": "c",
+        "chainedhashtable.h": "c",
+        "chainedhashnumfuncs.h": "c",
+        "stdio.h": "c",
+        "linkedlist.h": "c",
+        "confusingwrapper.h": "c",
+        "cmath": "c"
+    },
+    "C_Cpp.errorSquiggles": "enabledIfIncludesResolve"
+}
