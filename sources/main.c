@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 #include "ChainedHashTable.h"
 #include "StringWrapper.h"
 #include "ConfusingWrapper.h"
@@ -45,10 +46,13 @@ int main() {
     
     ChainedHash_Table T = ChainedHash_CreateTable(9, String_MaxIntKey);
 
+    srand(time(NULL));
+
     int choice;
     while ((choice = option_prompt())) switch (choice) {
         case 1:  // insert
-            printf("\nINSERT\n");
+            // manual insertion
+            /* printf("\nINSERT\n");
 
             printf("\nGive string to insert: ");
             getLine(input);
@@ -58,7 +62,20 @@ int main() {
             printf("\n %s", input);
             if (ChainedHash_Insert(T, stringContainer, String_keyWrappersEqual, String_keyWrapperToInt))
                 printf("\n inserted");
-            else printf("\n already exists");
+            else printf("\n already exists"); */
+
+            // massive random insertion
+            for (int i = 0; i < 100; i++) {
+                int length = 1 + ((double)rand()/(double)RAND_MAX)*(String_MaxLength - 1);
+                char str[length];
+                for (int c = 0; c < length; c++)
+                    str[c] = 32 + ((double)rand()/(double)RAND_MAX)*(126-32);
+                if (!strcmp(str, "\0")) continue;
+                str[length] = '\0';
+                stringContainer = String_ContainerCreate(str);
+                ChainedHash_Insert(T, stringContainer, String_keyWrappersEqual, String_keyWrapperToInt);
+            }
+
             break;
         
         case 2:  // delete
