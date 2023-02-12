@@ -12,6 +12,8 @@
     Generic_KeyDataContainer ChainedHash_Search(ChainedHash_Table T, void* keyWrapper, bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2), size_t (*keyWrapper_to_int)(void* keyWrapper));
     Generic_KeyDataContainer ChainedHash_Delete(ChainedHash_Table T, void* keyWrapper, bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2), size_t (*keyWrapper_to_int)(void* keyWrapper));
     bool ChainedHash_Insert(ChainedHash_Table T, Generic_KeyDataContainer kdcont, bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2), size_t (*keyWrapper_to_int)(void* keyWrapper));
+    size_t ChainedHash_GetNumberOfElements(ChainedHash_Table T);
+    size_t ChainedHash_GetNumberOfActiveSlots(ChainedHash_Table T);
     void ChainedHash_PrintTable(ChainedHash_Table T, void (*KeyDataContainer_print)(Generic_KeyDataContainer kdcont));
     void ChainedHash_ClearTable(ChainedHash_Table T, void (*KeyDataContainer_delete)(Generic_KeyDataContainer kdcont), bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2));
     void ChainedHash_DeleteTable(ChainedHash_Table T, void (*KeyDataContainer_delete)(Generic_KeyDataContainer kdcont), bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2));

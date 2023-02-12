@@ -26,7 +26,8 @@ int option_prompt() {
         "\n2 delete"
         "\n3 search"
         "\n4 print"
-        "\n5 clear"
+        "\n5 stats"
+        "\n6 clear"
         "\n0 exit"
         "\nChoose your option: "
     );
@@ -43,19 +44,18 @@ int main() {
     char* input = malloc(String_MaxLength);
     void* string_keyWrapper;
     Generic_KeyDataContainer stringContainer;
-    
-    int size = 500;
-    ChainedHash_Table T = ChainedHash_CreateTable(size, String_MaxIntKey);
-
     srand(time(NULL));
+    
+    int size = 5000;
+    ChainedHash_Table T = ChainedHash_CreateTable(size, String_MaxIntKey);
 
     int choice;
     while ((choice = option_prompt())) switch (choice) {
         case 1:  // insert
-            // manual insertion
-            /* printf("\nINSERT\n");
+            printf("\nINSERT\n");
 
-            printf("\nGive string to insert: ");
+            // manual insertion
+            /* printf("\nGive string to insert: ");
             getLine(input);
             if (!strcmp(input, "\0")) break;
             stringContainer = String_ContainerCreate(input);
@@ -68,13 +68,13 @@ int main() {
             // massive random insertion
             for (int i = 0; i < size; i++) {
                 int length = 1 + ((double)rand()/(double)RAND_MAX)*(String_MaxLength - 1);
-                char str[length];
                 for (int c = 0; c < length; c++)
-                    str[c] = 32 + ((double)rand()/(double)RAND_MAX)*(126-32);
-                if (!strcmp(str, "\0")) continue;
-                str[length] = '\0';
-                stringContainer = String_ContainerCreate(str);
-                ChainedHash_Insert(T, stringContainer, String_keyWrappersEqual, String_keyWrapperToInt);
+                    input[c] = 32 + ((double)rand()/(double)RAND_MAX)*(126-32);
+                input[length] = '\0';
+                if (!strcmp(input, "\0")) continue;
+                stringContainer = String_ContainerCreate(input);
+                if (!ChainedHash_Insert(T, stringContainer, String_keyWrappersEqual, String_keyWrapperToInt))
+                    String_ContainerDelete(stringContainer);
             }
 
             break;
@@ -113,8 +113,20 @@ int main() {
             printf("\nPRINT\n");
             ChainedHash_PrintTable(T, String_ContainerPrint);
             break;
+
+        case 5:
+            printf("\nSTATS\n");
+            size_t elmts = ChainedHash_GetNumberOfElements(T);
+            size_t slots = ChainedHash_GetNumberOfActiveSlots(T);
+            printf(
+                "\n Total number of elements : %d"
+                "\n Number of non-empty slots: %d"
+                "\n Avg number of elements   : %.2f",
+                elmts, slots, (float)elmts/(float)slots
+            );
+            break;
         
-        case 5:  // clear
+        case 6:  // clear
             printf("\nCLEAR\n");
             ChainedHash_ClearTable(T, String_ContainerDelete, String_keyWrappersEqual);
             break;

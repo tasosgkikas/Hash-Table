@@ -84,6 +84,25 @@ bool ChainedHash_Insert(
 }
 
 
+/* Returns the total number of elements in the given hash-table. */
+size_t ChainedHash_GetNumberOfElements(ChainedHash_Table T) {
+    size_t elements = 0;
+    for (size_t i = 0; i < T->size; i++)
+        elements += LinkedList_GetSize(T->table[i]);
+    return elements;
+}
+
+
+/* Return the number of slots of the given hash-table containing at least one element. */
+size_t ChainedHash_GetNumberOfActiveSlots(ChainedHash_Table T) {
+    size_t slots = 0;
+    for (size_t i = 0; i < T->size; i++)
+        if (!LinkedList_IsEmpty(T->table[i]))
+            slots++;
+    return slots;
+}
+
+
 /* Prints the contents of the hash-table using the given KeyDataContainer_print function. */
 void ChainedHash_PrintTable(
     ChainedHash_Table T, void (*KeyDataContainer_print)(Generic_KeyDataContainer kdcont)
