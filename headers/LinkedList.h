@@ -17,6 +17,8 @@
     Generic_KeyDataContainer LinkedList_Search(LinkedList L, void* keyWrapper, bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2));
     Generic_KeyDataContainer LinkedList_Delete(LinkedList L, void* keyWrapper, bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2));
     bool LinkedList_Insert(LinkedList L, Generic_KeyDataContainer kdcont, bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2));
+    bool LinkedList_IsEmpty(LinkedList L);
+    size_t LinkedList_GetSize(LinkedList L);
     void LinkedList_PrintList(LinkedList L, void (*KeyDataContainer_print)(Generic_KeyDataContainer kdcont));
     void LinkedList_ClearList(LinkedList L, void (*KeyDataContainer_delete)(Generic_KeyDataContainer kdcont), bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2));
     void LinkedList_DeleteList(LinkedList L, void (*KeyDataContainer_delete)(Generic_KeyDataContainer kdcont), bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2));

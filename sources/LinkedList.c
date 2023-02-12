@@ -105,6 +105,24 @@ bool LinkedList_Insert(
 }
 
 
+/* Returns true if the given Linked-List is empty, otherwise returns false. */
+bool LinkedList_IsEmpty(LinkedList L) {
+    return L->nil->next == L->nil;
+}
+
+
+/* Returns the number of the elements contained in the given list. */
+size_t LinkedList_GetSize(LinkedList L) {
+    size_t size = 0;
+    _LinkedList_Element element = L->nil->next;  // starting at head (can be L.nil)
+    while (element != L->nil) {
+        size++;
+        element = element->next;
+    }
+    return size;
+}
+
+
 /* Prints the contents of the Linked-List using the given KeyDataContainer_print function. */
 void LinkedList_PrintList(
     LinkedList L, void (*KeyDataContainer_print)(Generic_KeyDataContainer kdcont)
