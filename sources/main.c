@@ -16,20 +16,23 @@ void getLine(char* string) {
     string[last_index] = '\0';
 }
 
-int option_prompt() {
-    int option;
+void showMenu() {
     printf(
         "\n"
         "\nMAIN MENU"
-        "\n1 insert"
-        "\n2 delete"
-        "\n3 search"
-        "\n4 print"
-        "\n5 clear"
-        "\n0 exit"
-        "\nChoose your option: "
+        "\ni : insert"
+        "\nd : delete"
+        "\ns : search"
+        "\np : print"
+        "\nc : clear"
+        "\ne : exit"
     );
-    scanf("%d%*c", &option);
+}
+
+char optionPrompt() {
+    char option;
+    printf("\nGive your option ('m' for the menu): ");
+    scanf("%c%*c", &option);
     return option;
 }
 
@@ -43,11 +46,16 @@ int main() {
     void* string_keyWrapper;
     Generic_KeyDataContainer stringContainer;
     
-    ChainedHash_Table T = ChainedHash_CreateTable(9, String_MaxIntKey);
+    ChainedHash_Table T = ChainedHash_CreateTable(10, String_MaxIntKey);
 
-    int choice;
-    while ((choice = option_prompt())) switch (choice) {
-        case 1:  // insert
+    char choice;
+    showMenu();
+    while ((choice = optionPrompt()) != 'e') switch (choice) {
+        case 'm':  // menu
+            showMenu();
+            break;
+
+        case 'i':  // insert
             printf("\nINSERT\n");
 
             printf("\nGive string to insert: ");
@@ -58,10 +66,13 @@ int main() {
             printf("\n %s", input);
             if (ChainedHash_Insert(T, stringContainer, String_keyWrappersEqual, String_keyWrapperToInt))
                 printf("\n inserted");
-            else printf("\n already exists");
+            else {
+                printf("\n already exists");
+                String_ContainerDelete(stringContainer);
+            }
             break;
         
-        case 2:  // delete
+        case 'd':  // delete
             printf("\nDELETE\n");
             
             printf("\nGive key to delete: ");
@@ -77,7 +88,7 @@ int main() {
             String_keyWrapperDelete(string_keyWrapper);
             break;
         
-        case 3:  // search
+        case 's':  // search
             printf("\nSEARCH\n");
             
             printf("\nGive key to search: ");
@@ -91,12 +102,12 @@ int main() {
             String_keyWrapperDelete(string_keyWrapper);
             break;
         
-        case 4:  // print
+        case 'p':  // print
             printf("\nPRINT\n");
             ChainedHash_PrintTable(T, String_ContainerPrint);
             break;
         
-        case 5:  // clear
+        case 'c':  // clear
             printf("\nCLEAR\n");
             ChainedHash_ClearTable(T, String_ContainerDelete, String_keyWrappersEqual);
             break;
