@@ -33,11 +33,14 @@ void String_init() {
 
 /* Interprets the string-key as a tuple of ASCII-code characters and expresses it as an equivalent-radix integer. */
 size_t String_keyWrapperToInt(void* skw) {
-    char string[String_MaxLength];
-    strcpy(string, ((String_keyWrapper)skw)->string_key);
-    size_t size = strlen(string), integer = 0;
-    for (int i = 0; i < size; i++)
-        integer += (string[i] - 31) * pow(ASCII_REPR_RADIX, i);
+    char* string_ptr = ((String_keyWrapper)skw)->string_key;
+    int length = strlen(string_ptr);
+    char string_arr[length];
+    strcpy(string_arr, string_ptr);
+    
+    size_t integer = 0;
+    for (int i = 0; i < length; i++)
+        integer += (string_arr[i] - 31) * pow(ASCII_REPR_RADIX, i);
     return integer;
 }
 
