@@ -44,7 +44,8 @@ int main() {
     void* string_keyWrapper;
     Generic_KeyDataContainer stringContainer;
     
-    ChainedHash_Table T = ChainedHash_CreateTable(9, String_MaxIntKey);
+    int size = 500;
+    ChainedHash_Table T = ChainedHash_CreateTable(size, String_MaxIntKey);
 
     srand(time(NULL));
 
@@ -65,7 +66,7 @@ int main() {
             else printf("\n already exists"); */
 
             // massive random insertion
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < size; i++) {
                 int length = 1 + ((double)rand()/(double)RAND_MAX)*(String_MaxLength - 1);
                 char str[length];
                 for (int c = 0; c < length; c++)
