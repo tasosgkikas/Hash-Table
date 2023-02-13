@@ -6,13 +6,13 @@
 #include "StringWrapper.h"
 #include "ConfusingWrapper.h"
 
-void getLine(char* string) {
+void getLine(char* string, size_t max_length) {
     int i;
     char c;
     for (i = 0; (c = getchar()) != '\n'; i++) 
-        if (i < String_MaxLength - 1) string[i] = c;
+        if (i < max_length - 1) string[i] = c;
 
-    int length = i < String_MaxLength - 1 ? i : String_MaxLength - 1;
+    int length = i < max_length - 1 ? i : max_length - 1;
     string[length] = '\0';
 }
 
@@ -64,7 +64,7 @@ char commandPrompt() {
     printf(">> ");
 
     char* buffer = malloc(BUFSIZ);
-    getLine(buffer);
+    getLine(buffer, BUFSIZ);
     strip(buffer);
     
     char command = buffer[0];
@@ -76,7 +76,7 @@ char commandPrompt() {
 
 int main() {
 
-    #if 1
+    #if 1  // toggle to switch between 'String' and 'Confusing' data type
 
     String_init();
     printf("\nmax %d chars per string\n", String_MaxLength - 1);
@@ -95,7 +95,7 @@ int main() {
 
         case 'i':  // insert
             printf("Give string to insert: ");
-            getLine(input);
+            getLine(input, String_MaxLength);
             if (!strcmp(input, "\0")) break;
             stringContainer = String_ContainerCreate(input);
 
@@ -110,7 +110,7 @@ int main() {
         
         case 'd':  // delete
             printf("Give key to delete: ");
-            getLine(input);
+            getLine(input, String_MaxLength);
             if (!strcmp(input, "\0")) break;
             string_keyWrapper = String_keyWrapperCreate(input);
             stringContainer = ChainedHash_Delete(T, string_keyWrapper, String_keyWrappersEqual, String_keyWrapperToInt);
@@ -125,16 +125,16 @@ int main() {
         
         case 's':  // search
             printf("Give key to search: ");
-            getLine(input);
+            getLine(input, String_MaxLength);
             if (!strcmp(input, "\0")) break;
             string_keyWrapper = String_keyWrapperCreate(input);
             stringContainer = ChainedHash_Search(T, string_keyWrapper, String_keyWrappersEqual, String_keyWrapperToInt);
             
             if (stringContainer) String_ContainerPrint(stringContainer);
             else printf("%s not found", input);
+            printf("\n");
 
             String_keyWrapperDelete(string_keyWrapper);
-            printf("\n");
             break;
         
         case 'p':  // print
@@ -166,68 +166,74 @@ int main() {
     void* confusing_keyWrapper;
     Generic_KeyDataContainer confusingContainer;
 
-    ChainedHash_Table T = ChainedHash_CreateTable(9, ULONG_MAX);
+    ChainedHash_Table T = ChainedHash_CreateTable(10, ULONG_MAX);
 
-    int command;
-    while ((command = option_prompt())) switch (command) {
-        case 1:  // insert
-            printf("\nINSERT\n");
+    showCommands();
+    char command;
+    while ((command = commandPrompt()) != 'e') switch (command) {
+        case 'h':  // commands
+            showCommands();
+            break;
 
-            printf("\nGive a b c to insert: ");
+        case 'i':  // insert
+            printf("Give a b c to insert: ");
             scanf("%d %d %lf%*c", &a, &b, &c);
             confusingContainer = Confusing_ContainerCreate(a, b, c);
 
             if (ChainedHash_Insert(T, confusingContainer, Confusing_keyWrappersEqual, Confusing_keyWrapperToInt)) {
-                printf("inserted ");
                 Confusing_ContainerPrint(confusingContainer);
+                printf(" inserted\n");
+            } else {
+                printf("Key %d already exists\n", a);
+                Confusing_ContainerDelete(confusingContainer);
             }
-            else printf("\nkey %d already exists", a);
             break;
         
-        case 2:  // delete
-            printf("\nDELETE\n");
-            
-            printf("\nGive a to delete: ");
+        case 'd':  // delete
+            printf("Give key 'a' to delete: ");
             scanf("%d%*c", &a);
             confusing_keyWrapper = Confusing_keyWrapperCreate(a);
             confusingContainer = ChainedHash_Delete(T, confusing_keyWrapper, Confusing_keyWrappersEqual, Confusing_keyWrapperToInt);
 
             if (confusingContainer) {
-                printf("deleted ");
                 Confusing_ContainerPrint(confusingContainer);
+                printf(" deleted\n");
                 Confusing_ContainerDelete(confusingContainer);
             }
-            else printf("\nkey %d not found", a);
+            else printf("Key %d not found\n", a);
 
             Confusing_keyWrapperDelete(confusing_keyWrapper);
             break;
         
-        case 3:  // search
-            printf("\nSEARCH\n");
-            
-            printf("\nGive a to search: ");
+        case 's':  // search
+            printf("Give a to search: ");
             scanf("%d%*c", &a);
             confusing_keyWrapper = Confusing_keyWrapperCreate(a);
             confusingContainer = ChainedHash_Search(T, confusing_keyWrapper, Confusing_keyWrappersEqual, Confusing_keyWrapperToInt);
 
             if (confusingContainer) Confusing_ContainerPrint(confusingContainer);
-            else printf("\nkey %d not found", a);
+            else printf("Key %d not found", a);
+            printf("\n");
 
             Confusing_keyWrapperDelete(confusing_keyWrapper);
             break;
         
-        case 4:  // print
-            printf("\nPRINT\n");
+        case 'p':  // print
+            printf("\n");
             ChainedHash_PrintTable(T, Confusing_ContainerPrint);
+            printf("\n");
             break;
         
-        case 5:  // clear
-            printf("\nCLEAR\n");
+        case 'c':  // clear
+            printf("Table cleared\n");
             ChainedHash_ClearTable(T, Confusing_ContainerDelete, Confusing_keyWrappersEqual);
             break;
         
+        case '\0':
+            break;
+
         default:
-            printf("\nPlease choose one of the below:");
+            printf("Command not recognised\n");
             break;
     }
     
