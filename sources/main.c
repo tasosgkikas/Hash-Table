@@ -12,28 +12,66 @@ void getLine(char* string) {
     for (i = 0; (c = getchar()) != '\n'; i++) 
         if (i < String_MaxLength - 1) string[i] = c;
 
-    int last_index = i < String_MaxLength - 1 ? i : String_MaxLength - 1;
-    string[last_index] = '\0';
+    int length = i < String_MaxLength - 1 ? i : String_MaxLength - 1;
+    string[length] = '\0';
 }
 
-void showMenu() {
+void showCommands() {
     printf(
-        "\n"
-        "\nMAIN MENU"
+        "\nCommands and corresponding actions"
         "\ni : insert"
         "\nd : delete"
         "\ns : search"
         "\np : print"
         "\nc : clear"
         "\ne : exit"
+        "\nh : commands"
+        "\n"
     );
 }
 
-char optionPrompt() {
-    char option;
-    printf("\nGive your option ('m' for the menu): ");
-    scanf("%c%*c", &option);
-    return option;
+bool white(char c) {
+    return (
+        c == '\0' ||
+        c == ' '  ||
+        c == '\n'
+    );
+}
+
+void strip(char* string) {
+    int length = strlen(string);
+    char str[length];
+    strcpy(str, string);
+
+    while (length > 0 && white(str[length - 1])) 
+        length--;
+    str[length] = '\0';
+
+    int text = length - 1;
+    while (text - 1 >= 0 && !white(str[text - 1]))
+        text--;
+
+    int i = 0;
+    while (i < text && white(str[i]) && text + i <= length) {
+        str[i] = str[text + i];
+        i++;
+    }
+
+    strcpy(string, str);
+}
+
+char commandPrompt() {
+    printf(">> ");
+
+    char* buffer = malloc(BUFSIZ);
+    getLine(buffer);
+    strip(buffer);
+    
+    char command = buffer[0];
+    if (strlen(buffer) > 1) command = '\r';
+    free(buffer);
+
+    return command;
 }
 
 int main() {
@@ -48,72 +86,73 @@ int main() {
     
     ChainedHash_Table T = ChainedHash_CreateTable(10, String_MaxIntKey);
 
-    char choice;
-    showMenu();
-    while ((choice = optionPrompt()) != 'e') switch (choice) {
-        case 'm':  // menu
-            showMenu();
+    showCommands();
+    char command;
+    while ((command = commandPrompt()) != 'e') switch (command) {
+        case 'h':  // commands
+            showCommands();
             break;
 
         case 'i':  // insert
-            printf("\nINSERT\n");
-
-            printf("\nGive string to insert: ");
+            printf("Give string to insert: ");
             getLine(input);
             if (!strcmp(input, "\0")) break;
             stringContainer = String_ContainerCreate(input);
 
-            printf("\n %s", input);
+            printf("%s", input);
             if (ChainedHash_Insert(T, stringContainer, String_keyWrappersEqual, String_keyWrapperToInt))
-                printf("\n inserted");
+                printf(" inserted\n");
             else {
-                printf("\n already exists");
+                printf(" already exists\n");
                 String_ContainerDelete(stringContainer);
             }
             break;
         
         case 'd':  // delete
-            printf("\nDELETE\n");
-            
-            printf("\nGive key to delete: ");
+            printf("Give key to delete: ");
             getLine(input);
+            if (!strcmp(input, "\0")) break;
             string_keyWrapper = String_keyWrapperCreate(input);
             stringContainer = ChainedHash_Delete(T, string_keyWrapper, String_keyWrappersEqual, String_keyWrapperToInt);
             
-            printf("\n %s", input);
-            if (stringContainer) printf("\n deleted");
-            else printf("\n not found");
+            printf("%s", input);
+            if (stringContainer) printf(" deleted\n");
+            else printf(" not found\n");
 
             String_ContainerDelete(stringContainer);
             String_keyWrapperDelete(string_keyWrapper);
             break;
         
         case 's':  // search
-            printf("\nSEARCH\n");
-            
-            printf("\nGive key to search: ");
+            printf("Give key to search: ");
             getLine(input);
+            if (!strcmp(input, "\0")) break;
             string_keyWrapper = String_keyWrapperCreate(input);
             stringContainer = ChainedHash_Search(T, string_keyWrapper, String_keyWrappersEqual, String_keyWrapperToInt);
             
             if (stringContainer) String_ContainerPrint(stringContainer);
-            else printf("\n %s not found", input);
+            else printf("%s not found", input);
 
             String_keyWrapperDelete(string_keyWrapper);
+            printf("\n");
             break;
         
         case 'p':  // print
-            printf("\nPRINT\n");
+            printf("\n");
             ChainedHash_PrintTable(T, String_ContainerPrint);
+            printf("\n");
             break;
         
         case 'c':  // clear
-            printf("\nCLEAR\n");
+            printf("Table cleared\n");
             ChainedHash_ClearTable(T, String_ContainerDelete, String_keyWrappersEqual);
             break;
         
+        case '\0':
+            break;
+
         default:
-            printf("\nPlease choose one of the below:");
+            printf("Command not recognised\n");
             break;
     }
     
@@ -129,8 +168,8 @@ int main() {
 
     ChainedHash_Table T = ChainedHash_CreateTable(9, ULONG_MAX);
 
-    int choice;
-    while ((choice = option_prompt())) switch (choice) {
+    int command;
+    while ((command = option_prompt())) switch (command) {
         case 1:  // insert
             printf("\nINSERT\n");
 
@@ -196,6 +235,6 @@ int main() {
     
     #endif
 
-    printf("\nQuitting...\n");
+    printf("\nExitting...\n");
     return 0;
 }
