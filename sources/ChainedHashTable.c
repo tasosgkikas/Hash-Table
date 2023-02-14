@@ -44,17 +44,28 @@ ChainedHash_Table ChainedHash_CreateTable(
 }
 
 
+/* Returns a pointer to the list of the slot of the given hash-table that the given keyWrapper hashes to. */
+LinkedList _ChainedHash_GetHashList(
+    ChainedHash_Table T, void* keyWrapper, 
+    size_t (*keyWrapper_to_int)(void* keyWrapper)
+) {
+    assert(T != NULL);
+
+    size_t key = keyWrapper_to_int(keyWrapper);
+    return T->table[hash(key, T->a, T->b, T->p, T->size)];
+}
+
+
 /* Returns a pointer to the key-data container with the key of the given key wrapper (or NULL if no such element exists). It uses the given keyWrappers_equal function to check for key equality and keyWrapper_to_int function to map the keyWrapper to an integer key. */
 Generic_KeyDataContainer ChainedHash_Search(
     ChainedHash_Table T, void* keyWrapper, 
     bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2),
     size_t (*keyWrapper_to_int)(void* keyWrapper)
 ) {
-    assert(T != NULL);
-
-    size_t key = keyWrapper_to_int(keyWrapper);
-    LinkedList list = T->table[hash(key, T->a, T->b, T->p, T->size)];
-    return LinkedList_Search(list, keyWrapper, keyWrappers_equal);
+    return LinkedList_Search(
+        _ChainedHash_GetHashList(T, keyWrapper, keyWrapper_to_int), 
+        keyWrapper, keyWrappers_equal
+    );
 }
 
 
@@ -64,9 +75,10 @@ Generic_KeyDataContainer ChainedHash_Delete(
     bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2),
     size_t (*keyWrapper_to_int)(void* keyWrapper)
 ) {
-    size_t key = keyWrapper_to_int(keyWrapper);
-    LinkedList list = T->table[hash(key, T->a, T->b, T->p, T->size)];
-    return LinkedList_Delete(list, keyWrapper, keyWrappers_equal);
+    return LinkedList_Delete(
+        _ChainedHash_GetHashList(T, keyWrapper, keyWrapper_to_int), 
+        keyWrapper, keyWrappers_equal
+    );
 }
 
 
@@ -76,11 +88,10 @@ bool ChainedHash_Insert(
     bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2),
     size_t (*keyWrapper_to_int)(void* keyWrapper)
 ) {
-    if (ChainedHash_Search(T, kdcont->keyWrapper, keyWrappers_equal, keyWrapper_to_int) != NULL) return false;
-    
-    size_t key = keyWrapper_to_int(kdcont->keyWrapper);
-    LinkedList list = T->table[hash(key, T->a, T->b, T->p, T->size)];
-    return LinkedList_Insert(list, kdcont, keyWrappers_equal);
+    return LinkedList_Insert(
+        _ChainedHash_GetHashList(T, kdcont->keyWrapper, keyWrapper_to_int), 
+        kdcont, keyWrappers_equal
+    );
 }
 
 
