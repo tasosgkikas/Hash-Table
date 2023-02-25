@@ -1,4 +1,6 @@
 
+# MAKEFILE
+
 HDR_DIR   = headers
 SRC_DIR   = sources
 OBJ_DIR   = objects

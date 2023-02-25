@@ -1,6 +1,8 @@
 
-#ifndef _HashFunction_h_
-#define _HashFunction_h_
+/* ChainedHashNumFuncs.h */
+
+#ifndef _ChainedHashNumFuncs_h_
+#define _ChainedHashNumFuncs_h_
 
     #include <stdlib.h>
     #include <stdbool.h>

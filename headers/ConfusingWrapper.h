@@ -1,4 +1,6 @@
 
+/* ConfusingWrapper.h */
+
 #ifndef _ConfusingWrapper_h_
 #define _ConfusingWrapper_h_
     

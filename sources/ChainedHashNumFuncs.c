@@ -1,4 +1,6 @@
 
+/* ChainedHashNumFuncs.c */
+
 #include "ChainedHashNumFuncs.h"
 
 /* Returns a random integer in the given interval [min, max). */

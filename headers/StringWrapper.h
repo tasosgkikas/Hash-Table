@@ -1,4 +1,6 @@
 
+/* StringWrapper.h */
+
 #ifndef _StringWrapper_h_
 #define _StringWrapper_h_
     

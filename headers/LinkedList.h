@@ -1,4 +1,6 @@
 
+/* LinkedList.h */
+
 #ifndef _LinkedList_h_
 #define _LinkedList_h_
     

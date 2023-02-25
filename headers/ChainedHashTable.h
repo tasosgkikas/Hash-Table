@@ -1,4 +1,6 @@
 
+/* ChainedHashTable.h */
+
 #ifndef _ChainedHashTable_h_
 #define _ChainedHashTable_h_
     
