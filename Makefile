@@ -11,16 +11,6 @@ OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))  # object files
 DIRS = $(HDR_DIR) $(SRC_DIR) $(OBJ_DIR)
 CFLAGS = -g -I$(HDR_DIR) #-L$(OBJ_DIR)
 
-all: file_classification $(MAIN_FILE).exe
-
-file_classification: $(DIRS)
-	@cmd /c for %%i in (*.h) do move "%%i" $(HDR_DIR)
-	@cmd /c for %%i in (*.c) do move "%%i" $(SRC_DIR)
-	@cmd /c for %%i in (*.o) do move "%%i" $(OBJ_DIR)
-
-$(DIRS):
-	mkdir $@
-
 $(MAIN_FILE).exe: $(OBJ)
 	$(CC) $(CFLAGS) $^ -o $@
 
