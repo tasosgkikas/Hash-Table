@@ -7,10 +7,10 @@ OBJ_DIR   = objects
 MAIN_FILE = main
 CC        = gcc
 
-HDR = $(wildcard $(HDR_DIR)/*.h)  # header files
-SRC = $(wildcard $(SRC_DIR)/*.c)   # source files
-OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))  # object files
-DIRS = $(HDR_DIR) $(SRC_DIR) $(OBJ_DIR)
+HDR    = $(wildcard $(HDR_DIR)/*.h)  # header files
+SRC    = $(wildcard $(SRC_DIR)/*.c)   # source files
+OBJ    = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))  # object files
+DIRS   = $(HDR_DIR) $(SRC_DIR) $(OBJ_DIR)
 CFLAGS = -g -I$(HDR_DIR) #-L$(OBJ_DIR)
 
 $(MAIN_FILE).exe: $(OBJ)
