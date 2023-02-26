@@ -102,8 +102,9 @@ int main() {
             stringContainer = String_ContainerCreate(input);
 
             printf("%s", input);
-            if (ChainedHash_Insert(T, stringContainer, String_keyWrappersEqual, String_keyWrapperToInt))
-                printf(" inserted\n");
+            if (ChainedHash_Insert(
+                T, stringContainer, String_keyWrappersEqual, String_keyWrapperToInt
+                )) printf(" inserted\n");
             else {
                 printf(" already exists\n");
                 String_ContainerDelete(stringContainer);
@@ -115,7 +116,9 @@ int main() {
             getLine(input, String_MaxLength);
             if (!strcmp(input, "\0")) break;
             string_keyWrapper = String_keyWrapperCreate(input);
-            stringContainer = ChainedHash_Delete(T, string_keyWrapper, String_keyWrappersEqual, String_keyWrapperToInt);
+            stringContainer = ChainedHash_Delete(
+                T, string_keyWrapper, String_keyWrappersEqual, String_keyWrapperToInt
+            );
             
             printf("%s", input);
             if (stringContainer) printf(" deleted\n");
@@ -130,7 +133,9 @@ int main() {
             getLine(input, String_MaxLength);
             if (!strcmp(input, "\0")) break;
             string_keyWrapper = String_keyWrapperCreate(input);
-            stringContainer = ChainedHash_Search(T, string_keyWrapper, String_keyWrappersEqual, String_keyWrapperToInt);
+            stringContainer = ChainedHash_Search(
+                T, string_keyWrapper, String_keyWrappersEqual, String_keyWrapperToInt
+            );
             
             if (stringContainer) String_ContainerPrint(stringContainer);
             else printf("%s not found", input);
@@ -182,7 +187,9 @@ int main() {
             scanf("%d %d %lf%*c", &a, &b, &c);
             confusingContainer = Confusing_ContainerCreate(a, b, c);
 
-            if (ChainedHash_Insert(T, confusingContainer, Confusing_keyWrappersEqual, Confusing_keyWrapperToInt)) {
+            if (ChainedHash_Insert(
+                T, confusingContainer, Confusing_keyWrappersEqual, Confusing_keyWrapperToInt)
+            ) {
                 Confusing_ContainerPrint(confusingContainer);
                 printf(" inserted\n");
             } else {
@@ -195,7 +202,9 @@ int main() {
             printf("Give key 'a' to delete: ");
             scanf("%d%*c", &a);
             confusing_keyWrapper = Confusing_keyWrapperCreate(a);
-            confusingContainer = ChainedHash_Delete(T, confusing_keyWrapper, Confusing_keyWrappersEqual, Confusing_keyWrapperToInt);
+            confusingContainer = ChainedHash_Delete(
+                T, confusing_keyWrapper, Confusing_keyWrappersEqual, Confusing_keyWrapperToInt
+            );
 
             if (confusingContainer) {
                 Confusing_ContainerPrint(confusingContainer);
@@ -211,7 +220,9 @@ int main() {
             printf("Give a to search: ");
             scanf("%d%*c", &a);
             confusing_keyWrapper = Confusing_keyWrapperCreate(a);
-            confusingContainer = ChainedHash_Search(T, confusing_keyWrapper, Confusing_keyWrappersEqual, Confusing_keyWrapperToInt);
+            confusingContainer = ChainedHash_Search(
+                T, confusing_keyWrapper, Confusing_keyWrappersEqual, Confusing_keyWrapperToInt
+            );
 
             if (confusingContainer) Confusing_ContainerPrint(confusingContainer);
             else printf("Key %d not found", a);
