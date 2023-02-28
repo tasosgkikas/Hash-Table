@@ -97,16 +97,39 @@ bool ChainedHash_Insert(
 }
 
 
+/* Traverses the hash-table slots and applies the given LinkedList_function to each encountered slot. LinkedList_function takes the corresponding given KeyDataContainer_function and the keyWrappers_equal function as arguments. */
+void _ChainedHash_TraverseTable(
+    ChainedHash_Table T, void (*LinkedList_function)(
+        LinkedList L, void (*KeyDataContainer_function)(Generic_KeyDataContainer kdcont),
+        bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2)
+    ), 
+    void (*KeyDataContainer_function)(Generic_KeyDataContainer kdcont),
+    bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2)
+) {
+    assert(T != NULL);
+
+    for (int i = 0; i < T->size; i++)
+        LinkedList_function(T->table[i], KeyDataContainer_function, keyWrappers_equal);
+}
+
+
+/* Wrapper of the LinkedList_PrintList function, with a new line at the end of the list. */
+void _ChainedHash_PrintList(
+    LinkedList L, void (*KeyDataContainer_print)(Generic_KeyDataContainer kdcont),
+    bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2)
+) {
+    LinkedList_PrintList(L, KeyDataContainer_print);
+    printf("\n");
+}
+
+
 /* Prints the contents of the hash-table using the given KeyDataContainer_print function. */
 void ChainedHash_PrintTable(
     ChainedHash_Table T, void (*KeyDataContainer_print)(Generic_KeyDataContainer kdcont)
 ) {
-    assert(T != NULL);
-
-    for (int i = 0; i < T->size; i++) {
-        LinkedList_PrintList(T->table[i], KeyDataContainer_print);
-        printf("\n");
-    }
+    _ChainedHash_TraverseTable(
+        T, _ChainedHash_PrintList, KeyDataContainer_print, (bool (*)(void *, void *))NULL
+    );
 }
 
 
@@ -115,10 +138,9 @@ void ChainedHash_ClearTable(
     ChainedHash_Table T, void (*KeyDataContainer_delete)(Generic_KeyDataContainer kdcont), 
     bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2)
 ) {
-    assert(T != NULL);
-
-    for (int i = 0; i < T->size; i++)
-        LinkedList_ClearList(T->table[i], KeyDataContainer_delete, keyWrappers_equal);
+    _ChainedHash_TraverseTable(
+        T, LinkedList_ClearList, KeyDataContainer_delete, keyWrappers_equal
+    );
 }
 
 
@@ -127,10 +149,9 @@ void ChainedHash_DeleteTable(
     ChainedHash_Table T, void (*KeyDataContainer_delete)(Generic_KeyDataContainer kdcont), 
     bool (*keyWrappers_equal)(void* keyWrapper1, void* keyWrapper2)
 ) {
-    assert(T != NULL);
-
-    for (int i = 0; i < T->size; i++)
-        LinkedList_DeleteList(T->table[i], KeyDataContainer_delete, keyWrappers_equal);
+    _ChainedHash_TraverseTable(
+        T, LinkedList_ClearList, KeyDataContainer_delete, keyWrappers_equal
+    );
 
     free(T->table);
     free(T);
