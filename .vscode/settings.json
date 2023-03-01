@@ -15,7 +15,8 @@
         "stdio.h": "c",
         "linkedlist.h": "c",
         "confusingwrapper.h": "c",
-        "cmath": "c"
+        "cmath": "c",
+        "stdlib.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabledIfIncludesResolve"
 }

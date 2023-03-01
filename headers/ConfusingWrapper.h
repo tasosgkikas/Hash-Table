@@ -6,6 +6,21 @@
     
     #include "LinkedList.h"
     
+
+    typedef struct {
+        int a;
+    } *Confusing_keyWrapper;
+
+    typedef struct {
+        int a_int;
+        struct {
+            int b_int;
+            struct {
+                double c_double;
+            } *b_struct_ptr;
+        } a_struct;
+    } *Confusing_dataWrapper;
+
     size_t Confusing_keyWrapperToInt(void* ckw);
     bool Confusing_keyWrappersEqual(void* ckw1, void* ckw2);
     void* Confusing_keyWrapperCreate(int a);

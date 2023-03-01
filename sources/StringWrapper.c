@@ -13,16 +13,6 @@
 #define ASCII_REPR_RADIX 127 - 31
 
 
-typedef struct {
-    char* string_key;
-} *String_keyWrapper;
-
-typedef struct {
-    char* string;
-    void* other_data;
-} *String_dataWrapper;
-
-
 int String_MaxLength;
 size_t String_MaxIntKey;
 

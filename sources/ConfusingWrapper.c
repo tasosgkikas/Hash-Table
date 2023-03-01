@@ -6,21 +6,6 @@
 #include "ConfusingWrapper.h"
 
 
-typedef struct {
-    int a;
-} *Confusing_keyWrapper;
-
-typedef struct {
-    int a_int;
-    struct {
-        int b_int;
-        struct {
-            double c_double;
-        } *b_struct_ptr;
-    } a_struct;
-} *Confusing_dataWrapper;
-
-
 size_t Confusing_keyWrapperToInt(void* ckw) {
     return ((Confusing_keyWrapper)ckw)->a;
 }

@@ -7,6 +7,16 @@
     #include <stdlib.h>
     #include "LinkedList.h"
 
+
+    typedef struct {
+        char* string_key;
+    } *String_keyWrapper;
+
+    typedef struct {
+        char* string;
+        void* other_data;
+    } *String_dataWrapper;
+
     extern int String_MaxLength;
     extern size_t String_MaxIntKey;
 
