@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "ChainedHashTable.h"
 #include "StringWrapper.h"
-#include "ConfusingWrapper.h"
+#include "SomeRandomWrapper.h"
 
 void getLine(char* string, size_t max_length) {
     int i;
@@ -78,7 +78,7 @@ char commandPrompt() {
 
 int main() {
 
-    #if 1  // toggle to switch between 'String' and 'Confusing' data type
+    #if 1  // toggle to switch between 'String' and 'SomeRandom' data type
 
     String_init();
     printf("\nmax %d chars per string\n", String_MaxLength - 1);
@@ -170,8 +170,8 @@ int main() {
 
     int a, b;
     double c;
-    void* confusing_keyWrapper;
-    Generic_KeyDataContainer confusingContainer;
+    void* SomeRandom_keyWrapper;
+    Generic_KeyDataContainer SomeRandomContainer;
 
     ChainedHash_Table T = ChainedHash_CreateTable(10, ULONG_MAX);
 
@@ -185,61 +185,61 @@ int main() {
         case 'i':  // insert
             printf("Give a b c to insert: ");
             scanf("%d %d %lf%*c", &a, &b, &c);
-            confusingContainer = Confusing_ContainerCreate(a, b, c);
+            SomeRandomContainer = SomeRandom_ContainerCreate(a, b, c);
 
             if (ChainedHash_Insert(
-                T, confusingContainer, Confusing_keyWrappersEqual, Confusing_keyWrapperToInt)
+                T, SomeRandomContainer, SomeRandom_keyWrappersEqual, SomeRandom_keyWrapperToInt)
             ) {
-                Confusing_ContainerPrint(confusingContainer);
+                SomeRandom_ContainerPrint(SomeRandomContainer);
                 printf(" inserted\n");
             } else {
                 printf("Key %d already exists\n", a);
-                Confusing_ContainerDelete(confusingContainer);
+                SomeRandom_ContainerDelete(SomeRandomContainer);
             }
             break;
         
         case 'd':  // delete
             printf("Give key 'a' to delete: ");
             scanf("%d%*c", &a);
-            confusing_keyWrapper = Confusing_keyWrapperCreate(a);
-            confusingContainer = ChainedHash_Delete(
-                T, confusing_keyWrapper, Confusing_keyWrappersEqual, Confusing_keyWrapperToInt
+            SomeRandom_keyWrapper = SomeRandom_keyWrapperCreate(a);
+            SomeRandomContainer = ChainedHash_Delete(
+                T, SomeRandom_keyWrapper, SomeRandom_keyWrappersEqual, SomeRandom_keyWrapperToInt
             );
 
-            if (confusingContainer) {
-                Confusing_ContainerPrint(confusingContainer);
+            if (SomeRandomContainer) {
+                SomeRandom_ContainerPrint(SomeRandomContainer);
                 printf(" deleted\n");
-                Confusing_ContainerDelete(confusingContainer);
+                SomeRandom_ContainerDelete(SomeRandomContainer);
             }
             else printf("Key %d not found\n", a);
 
-            Confusing_keyWrapperDelete(confusing_keyWrapper);
+            SomeRandom_keyWrapperDelete(SomeRandom_keyWrapper);
             break;
         
         case 's':  // search
             printf("Give a to search: ");
             scanf("%d%*c", &a);
-            confusing_keyWrapper = Confusing_keyWrapperCreate(a);
-            confusingContainer = ChainedHash_Search(
-                T, confusing_keyWrapper, Confusing_keyWrappersEqual, Confusing_keyWrapperToInt
+            SomeRandom_keyWrapper = SomeRandom_keyWrapperCreate(a);
+            SomeRandomContainer = ChainedHash_Search(
+                T, SomeRandom_keyWrapper, SomeRandom_keyWrappersEqual, SomeRandom_keyWrapperToInt
             );
 
-            if (confusingContainer) Confusing_ContainerPrint(confusingContainer);
+            if (SomeRandomContainer) SomeRandom_ContainerPrint(SomeRandomContainer);
             else printf("Key %d not found", a);
             printf("\n");
 
-            Confusing_keyWrapperDelete(confusing_keyWrapper);
+            SomeRandom_keyWrapperDelete(SomeRandom_keyWrapper);
             break;
         
         case 'p':  // print
             printf("\n");
-            ChainedHash_PrintTable(T, Confusing_ContainerPrint);
+            ChainedHash_PrintTable(T, SomeRandom_ContainerPrint);
             printf("\n");
             break;
         
         case 'c':  // clear
             printf("Table cleared\n");
-            ChainedHash_ClearTable(T, Confusing_ContainerDelete, Confusing_keyWrappersEqual);
+            ChainedHash_ClearTable(T, SomeRandom_ContainerDelete, SomeRandom_keyWrappersEqual);
             break;
         
         case '\0':
@@ -250,7 +250,7 @@ int main() {
             break;
     }
     
-    ChainedHash_DeleteTable(T, Confusing_ContainerDelete, Confusing_keyWrappersEqual);
+    ChainedHash_DeleteTable(T, SomeRandom_ContainerDelete, SomeRandom_keyWrappersEqual);
     
     #endif
 
