@@ -8,7 +8,7 @@
     
 
     typedef struct {
-        int a;
+        int a, b;
     } *SomeRandom_keyWrapper;
 
     typedef struct {
@@ -21,10 +21,10 @@
         } a_struct;
     } *SomeRandom_dataWrapper;
 
-    size_t SomeRandom_keyWrapperToInt(void* ckw);
-    bool SomeRandom_keyWrappersEqual(void* ckw1, void* ckw2);
-    void* SomeRandom_keyWrapperCreate(int a);
-    void SomeRandom_keyWrapperDelete(void* ckw);
+    size_t SomeRandom_keyWrapperToInt(void* srkw);
+    bool SomeRandom_keyWrappersEqual(void* srkw1, void* srkw2);
+    void* SomeRandom_keyWrapperCreate(int a, int b);
+    void SomeRandom_keyWrapperDelete(void* srkw);
     Generic_KeyDataContainer SomeRandom_ContainerCreate(int a, int b, double c);
     void SomeRandom_ContainerDelete(Generic_KeyDataContainer SomeRandomContainer);
     void SomeRandom_ContainerPrint(Generic_KeyDataContainer SomeRandomContainer);

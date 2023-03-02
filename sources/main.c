@@ -170,8 +170,8 @@ int main() {
 
     int a, b;
     double c;
-    void* SomeRandom_keyWrapper;
-    Generic_KeyDataContainer SomeRandomContainer;
+    void* someRandom_keyWrapper;
+    Generic_KeyDataContainer someRandomContainer;
 
     ChainedHash_Table T = ChainedHash_CreateTable(10, ULONG_MAX);
 
@@ -185,50 +185,50 @@ int main() {
         case 'i':  // insert
             printf("Give a b c to insert: ");
             scanf("%d %d %lf%*c", &a, &b, &c);
-            SomeRandomContainer = SomeRandom_ContainerCreate(a, b, c);
+            someRandomContainer = SomeRandom_ContainerCreate(a, b, c);
 
             if (ChainedHash_Insert(
-                T, SomeRandomContainer, SomeRandom_keyWrappersEqual, SomeRandom_keyWrapperToInt)
+                T, someRandomContainer, SomeRandom_keyWrappersEqual, SomeRandom_keyWrapperToInt)
             ) {
-                SomeRandom_ContainerPrint(SomeRandomContainer);
+                SomeRandom_ContainerPrint(someRandomContainer);
                 printf(" inserted\n");
             } else {
-                printf("Key %d already exists\n", a);
-                SomeRandom_ContainerDelete(SomeRandomContainer);
+                printf("Pair %d %d already exists\n", a, b);
+                SomeRandom_ContainerDelete(someRandomContainer);
             }
             break;
         
         case 'd':  // delete
-            printf("Give key 'a' to delete: ");
-            scanf("%d%*c", &a);
-            SomeRandom_keyWrapper = SomeRandom_keyWrapperCreate(a);
-            SomeRandomContainer = ChainedHash_Delete(
-                T, SomeRandom_keyWrapper, SomeRandom_keyWrappersEqual, SomeRandom_keyWrapperToInt
+            printf("Give pair 'a b' to delete: ");
+            scanf("%d %d%*c", &a, &b);
+            someRandom_keyWrapper = SomeRandom_keyWrapperCreate(a, b);
+            someRandomContainer = ChainedHash_Delete(
+                T, someRandom_keyWrapper, SomeRandom_keyWrappersEqual, SomeRandom_keyWrapperToInt
             );
 
-            if (SomeRandomContainer) {
-                SomeRandom_ContainerPrint(SomeRandomContainer);
+            if (someRandomContainer) {
+                SomeRandom_ContainerPrint(someRandomContainer);
                 printf(" deleted\n");
-                SomeRandom_ContainerDelete(SomeRandomContainer);
+                SomeRandom_ContainerDelete(someRandomContainer);
             }
-            else printf("Key %d not found\n", a);
+            else printf("Pair %d %d not found\n", a, b);
 
-            SomeRandom_keyWrapperDelete(SomeRandom_keyWrapper);
+            SomeRandom_keyWrapperDelete(someRandom_keyWrapper);
             break;
         
         case 's':  // search
-            printf("Give a to search: ");
-            scanf("%d%*c", &a);
-            SomeRandom_keyWrapper = SomeRandom_keyWrapperCreate(a);
-            SomeRandomContainer = ChainedHash_Search(
-                T, SomeRandom_keyWrapper, SomeRandom_keyWrappersEqual, SomeRandom_keyWrapperToInt
+            printf("Give pair 'a b' to search: ");
+            scanf("%d %d%*c", &a, &b);
+            someRandom_keyWrapper = SomeRandom_keyWrapperCreate(a, b);
+            someRandomContainer = ChainedHash_Search(
+                T, someRandom_keyWrapper, SomeRandom_keyWrappersEqual, SomeRandom_keyWrapperToInt
             );
 
-            if (SomeRandomContainer) SomeRandom_ContainerPrint(SomeRandomContainer);
-            else printf("Key %d not found", a);
+            if (someRandomContainer) SomeRandom_ContainerPrint(someRandomContainer);
+            else printf("Pair %d %d not found", a, b);
             printf("\n");
 
-            SomeRandom_keyWrapperDelete(SomeRandom_keyWrapper);
+            SomeRandom_keyWrapperDelete(someRandom_keyWrapper);
             break;
         
         case 'p':  // print
