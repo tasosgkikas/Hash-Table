@@ -43,7 +43,7 @@ bool white(char c) {
 void strip(char* string) {
     int length = strlen(string);
     char str[length];
-    strcpy(str, string);
+    strncpy_s(str, length, string, String_MaxLength);
 
     while (length > 0 && white(str[length - 1])) 
         length--;
@@ -59,7 +59,7 @@ void strip(char* string) {
         i++;
     }
 
-    strcpy(string, str);
+    strncpy_s(string, length, str, String_MaxLength);
 }
 
 char commandPrompt() {

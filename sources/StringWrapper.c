@@ -28,7 +28,7 @@ size_t String_keyWrapperToInt(void* skw) {
     char* string_ptr = ((String_keyWrapper)skw)->string_key;
     int length = strlen(string_ptr);
     char string_arr[length];
-    strcpy(string_arr, string_ptr);
+    strncpy_s(string_arr, length, string_ptr, String_MaxLength);
     
     size_t integer = 0;
     for (int i = 0; i < length; i++)
@@ -50,7 +50,7 @@ bool String_keyWrappersEqual(void* skw1, void* skw2) {
 void* String_keyWrapperCreate(char* string) {
     String_keyWrapper skw = malloc(sizeof *skw);
     skw->string_key = malloc(String_MaxLength);
-    strcpy(skw->string_key, string);
+    strncpy_s(skw->string_key, strlen(string), string, String_MaxLength);
     return skw;
 }
 
@@ -66,7 +66,7 @@ void String_keyWrapperDelete(void* skw) {
 void* String_dataWrapperCreate(char* string) {
     String_dataWrapper sdw = malloc(sizeof *sdw);
     sdw->string = malloc(String_MaxLength);
-    strcpy(sdw->string, string);
+    strncpy_s(sdw->string, strlen(string), string, String_MaxLength);
     return sdw;
 }
 
