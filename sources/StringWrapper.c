@@ -37,7 +37,7 @@ size_t String_keyWrapperToInt(void* skw) {
 }
 
 
-/* Returns true is the keys of the given keyWrappers are equal, else false. */
+/* Returns true if the keys of the given keyWrappers are equal, else false. */
 bool String_keyWrappersEqual(void* skw1, void* skw2) {
     return !strcmp(
         ((String_keyWrapper)skw1)->string_key,
@@ -78,7 +78,7 @@ void String_dataWrapperDelete(void* sdw) {
 }
 
 
-/* Returns a pointer to a new string key-data wrappers container. Each wrapper is assigned the given string. */
+/* Returns a pointer to a new String key-data wrappers container. Each wrapper is assigned the given string. */
 Generic_KeyDataContainer String_ContainerCreate(char* string) {
     Generic_KeyDataContainer stringContainer = malloc(sizeof *stringContainer);
     stringContainer->keyWrapper = String_keyWrapperCreate(string);
@@ -87,7 +87,7 @@ Generic_KeyDataContainer String_ContainerCreate(char* string) {
 }
 
 
-/* Deletes the given key-data wrappers container, as well as the contained wrappers. */
+/* Deletes the given String key-data wrappers container, as well as the contained wrappers. */
 void String_ContainerDelete(Generic_KeyDataContainer stringContainer) {
     if (stringContainer == NULL) return;
 

@@ -17,7 +17,10 @@
         void* other_data;
     } *String_dataWrapper;
 
-    extern int String_MaxLength;
+    // Upper bound of the number of characters a string can contain (including the null terminator \0).
+    extern int String_MaxLength;  
+
+    // Maximum integer key any string can be mapped to.
     extern size_t String_MaxIntKey;
 
     void String_init();
